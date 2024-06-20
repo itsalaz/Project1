@@ -1,6 +1,5 @@
 
 // config.js
-
 import API_KEY from './config.js'
 
 const searchButton = document.querySelector('#searchButton')
@@ -53,7 +52,6 @@ function weatherData(cityName) {
 }
 
 
-
 // Defines and sets weather attributes that get called by weatherData
 function currentWeather(data) {
   document.querySelector('.city__name').textContent = data.name
@@ -62,7 +60,11 @@ function currentWeather(data) {
   document.querySelector('.max').textContent = `${Math.round((data.main.temp_max - 273.15) * 9/5 + 32)}°F`
   document.querySelector('.weather__content').textContent = data.weather[0].main
 
-  
+  document.querySelector('.humidity__details').textContent = data.main.humidity + '%'
+  document.querySelector('.wind__details').textContent = data.wind.speed + "mph"
+  document.querySelector('.visibility__details').textContent = data.visibility + '%'
+
+
   const weatherIcon = document.querySelector('.weather__icon')
   weatherIcon.src = data.weather[0].main
   if (data.weather[0].main === 'Thunderstorm') {
@@ -86,11 +88,6 @@ function currentWeather(data) {
 function displayForecast(data) {
   const dayTemp = document.querySelectorAll('.day_temp')
   for (let i = 0; i < dayTemp.length; i++) {
-    const forecast = data.list[i*8]
     dayTemp[i].textContent = `${Math.round((data.list[i * 8].main.temp - 273.15) * 9/5 + 32)}°F` // converting weather from Kelvin to Farenheit, i*8 because updates every 3 hours (8 times daily) 
     }
   }
-
-
-
-
