@@ -1,0 +1,23 @@
+{
+  "name": "project1",
+  "description": "",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsalaz/project1.git"
+  },
+  "keywords": [],
+  "author": "Elizabeth Marie Delgado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itsalaz/project1/issues"
+  },
+  "homepage": "https://github.com/itsalaz/project1",
+  "dependencies": {
+  }
+}
