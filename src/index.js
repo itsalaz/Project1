@@ -5,6 +5,16 @@ import API_KEY from './config.js'
 const searchButton = document.querySelector('#searchButton')
 const citySearch = document.querySelector('#city__search')
 
+const weatherIcon = {
+  'Thunderstorm': './images/lightning.png',
+  'Drizzle': './images/raining.png',
+  'Rain': './images/raining.png',
+  'Snow': './images/snow.png',
+  'Atmosphere': './images/sunny__cloudy__weather.png',
+  'Clear': './images/sunny__weather__icon.png',
+  'Clouds': './images/sunny__cloudy__weather.png'
+}
+
 // Clear search history
 searchButton.addEventListener('click', (e) => {
   e.preventDefault()
@@ -44,10 +54,24 @@ function weatherData(cityName) {
        currentWeather(data)
     })
 
+
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}`)
     .then(response => response.json())
     .then(data => {
       displayForecast(data)
+    })
+
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}`)
+    .then(response => response.json())
+    .then(data => {
+      displayForecastDates(data)
+    })
+
+
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}`)
+    .then(response => response.json())
+    .then(data => {
+      displayForecastIcons(data)
     })
 }
 
@@ -56,33 +80,17 @@ function weatherData(cityName) {
 function currentWeather(data) {
   document.querySelector('.city__name').textContent = data.name
   document.querySelector('.weather__temperature').textContent = `${Math.round((data.main.temp - 273.15) * 9/5 + 32)}°F`
-  document.querySelector('.min').textContent = `${Math.round((data.main.temp_min - 273.15) * 9/5 + 32)}°F`
-  document.querySelector('.max').textContent = `${Math.round((data.main.temp_max - 273.15) * 9/5 + 32)}°F`
   document.querySelector('.weather__content').textContent = data.weather[0].main
 
   document.querySelector('.humidity__details').textContent = data.main.humidity + '%'
   document.querySelector('.wind__details').textContent = data.wind.speed + "mph"
-  document.querySelector('.visibility__details').textContent = data.visibility + '%'
+  document.querySelector('.visibility__details').textContent = (data.visibility) + '%'
 
 
-  const weatherIcon = document.querySelector('.weather__icon')
-  weatherIcon.src = data.weather[0].main
-  if (data.weather[0].main === 'Thunderstorm') {
-  return weatherIcon.src = './images/lightning.png'
-  } else if (data.weather[0].main === 'Drizzle') {
-  return weatherIcon.src = './images/raining.png'
-  } else if (data.weather[0].main === 'Rain') {
-  return weatherIcon.src = './images/raining.png'
-  } else if (data.weather[0].main === 'Snow') {
-  return weatherIcon.src = './images/lightning.png'
-  } else if (data.weather[0].main === 'Atmosphere') {
-  return weatherIcon.src = './images/sunny__cloudy__weather.png'
-  } else if (data.weather[0].main === 'Clear') {
-  return weatherIcon.src = './images/sunny__weather__icon.png'
-  } else if (data.weather[0].main === 'Clouds') {
-  return weatherIcon.src = './images/sunny__cloudy__weather.png'
-  } 
+  const currentWeatherIcon = document.querySelector('#current__weather__icon')
+  currentWeatherIcon.src = weatherIcon[data.weather[0].main]
 }
+
 
 // Defines Forecast for Display
 function displayForecast(data) {
@@ -91,3 +99,27 @@ function displayForecast(data) {
     dayTemp[i].textContent = `${Math.round((data.list[i * 8].main.temp - 273.15) * 9/5 + 32)}°F` // converting weather from Kelvin to Farenheit, i*8 because updates every 3 hours (8 times daily) 
     }
   }
+
+  function displayForecastDates(data) {
+    const datesElements = document.querySelectorAll('.dates')
+    for(let i = 0; i < datesElements.length; i++) {
+      const timestamp = data.list[i*8].dt
+      const date = new Date(timestamp * 1000)
+      const formattedDates = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric'})
+      datesElements.forEach((timestamp, index) => {
+          datesElements[i].textContent = formattedDates
+    })
+  }
+}
+
+  function displayForecastIcons(data) {
+    console.log(data)
+    const displayIcons = document.querySelectorAll('.weather__icon')
+    console.log(displayIcons)
+    for(let i=0; i < displayIcons.length; i++) {
+        displayIcons[i].src = weatherIcon[data.list[i].weather[0].main]
+    }
+  }
+
+
+

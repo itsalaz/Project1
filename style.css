@@ -84,10 +84,6 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
-  transition: 1s;
-}
-
 
 /* Main */
 
